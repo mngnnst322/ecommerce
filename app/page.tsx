@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { Nav } from "./components/Nav";
@@ -38,6 +38,7 @@ export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [activeCategory, setActiveCategory] = useState();
 
   // TODO 5: Хайлтын state зарлах
   // search - хайлтын текст, эхлэх утга: ""
@@ -73,7 +74,7 @@ export default function Home() {
         setError(err.message);
         setLoading(false);
       });
-  }, [search, skip]);
+  }, [search, skip, activeCategory]);
   // TODO 8: Хайлт хийх handler
   // function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
   //   setSearch(e.target.value);

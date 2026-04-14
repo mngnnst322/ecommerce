@@ -8,11 +8,11 @@ export const Cards = ({ Product }: { Product: any }) => {
       <div className="relative overflow-hidden rounded-t-2xl bg-zinc-100 dark:bg-zinc-800">
         <img
           src={Product.thumbnail}
-          alt="Essence Mascara Lash Princess"
+          alt={Product.title}
           className="h-56 w-full object-cover transition-transform group-hover:scale-105"
         />
         <span className="absolute top-3 left-3 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-zinc-700 backdrop-blur dark:bg-zinc-900/90 dark:text-zinc-300">
-          beauty
+          {Product.category}
         </span>
       </div>
       <div className="p-5">
@@ -32,7 +32,11 @@ export const Cards = ({ Product }: { Product: any }) => {
             {[1, 2, 3, 4, 5].map((star) => (
               <svg
                 key={star}
-                className={`h-4 w-4 ${star <= 5 ? "text-amber-400" : "text-zinc-200 dark:text-zinc-700"}`}
+                className={`h-4 w-4 ${
+                  star <= Math.round(Product.rating)
+                    ? "text-amber-400"
+                    : "text-zinc-200 dark:text-zinc-700"
+                }`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
