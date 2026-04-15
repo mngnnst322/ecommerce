@@ -1,11 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
+import Link from "next/link";
 import React from "react";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const Cards = ({ Product }: { Product: any }) => {
   return (
-    <div className="group rounded-2xl border border-zinc-200 bg-white shadow-sm transition-all hover:shadow-lg hover:-translate-y-1 dark:border-zinc-800 dark:bg-zinc-900">
-      <div className="relative overflow-hidden rounded-t-2xl bg-zinc-100 dark:bg-zinc-800">
+    <Link
+      href={`/product-detail/${Product.id}`}
+      className=" block group rounded-2xl border border-zinc-200 bg-white shadow-sm transition-all hover:shadow-lg hover:-translate-y-1 dark:border-zinc-800 dark:bg-zinc-900"
+    >
+      <div className=" relative overflow-hidden rounded-t-2xl bg-zinc-100 dark:bg-zinc-800">
         <img
           src={Product.thumbnail}
           alt={Product.title}
@@ -49,6 +53,6 @@ export const Cards = ({ Product }: { Product: any }) => {
           </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };

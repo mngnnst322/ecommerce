@@ -38,7 +38,7 @@ export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [activeCategory, setActiveCategory] = useState();
+  const [activeCategory, setActiveCategory] = useState("");
 
   // TODO 5: Хайлтын state зарлах
   // search - хайлтын текст, эхлэх утга: ""
@@ -59,10 +59,13 @@ export default function Home() {
   useEffect(() => {
     setLoading(true);
     setError(null);
-    let url = `https://dummyjson.com/products?limit=${PRODUCTS_PER_PAGE}&skip=${skip}`;
-    if (search) {
-      url = `https://dummyjson.com/products/search?q=${search}&limit=${PRODUCTS_PER_PAGE}&skip=${skip}`;
-    }
+
+    let url = activeCategory
+      ? `https://dummyjson.com/products/category/${activeCategory}?limit=${PRODUCTS_PER_PAGE}&skip=${skip}`
+      : search
+        ? `https://dummyjson.com/products/search?q=${search}&limit=${PRODUCTS_PER_PAGE}&skip=${skip}`
+        : `https://dummyjson.com/products?limit=${PRODUCTS_PER_PAGE}&skip=${skip}`;
+
     fetch(url)
       .then((res) => res.json())
       .then((data: ProductsResponse) => {
@@ -100,7 +103,11 @@ export default function Home() {
       {/* Header */}
       <Header /> {/* Category Navigation */}
       {/* TODO 15: Идэвхтэй категорийг тодруулах, дарахад тухайн категорийн бүтээгдэхүүн шүүх */}
-      <Nav />
+      <Nav
+        activeCategory={activeCategory}
+        setSkip={setSkip}
+        setActiveCategory={setActiveCategory}
+      />
       {/* Main Content */}{" "}
       <main className="mx-auto max-w-7xl px-6 py-10">
         {/* Search */}
@@ -114,19 +121,40 @@ export default function Home() {
             className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 placeholder-zinc-400 shadow-sm outline-none transition-colors focus:border-zinc-400 focus:ring-2 focus:ring-zinc-200 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder-zinc-500 dark:focus:border-zinc-500 dark:focus:ring-zinc-800 sm:max-w-md"
           />
         </div>
+        {loading ? (
+          <div className="flex justify-center py-20">
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-zinc-300 border-t-zinc-900 dark:border-zinc-700 dark:border-t-zinc-100" />
+          </div>
+        ) : error ? (
+          <div className="flex justify-center py-20">
+            <p className="text-red-500">{error}</p>
+          </div>
+        ) : (
+          <>
+            <p className="mb-6 text-sm text-zinc-500 dark:text-zinc-400">
+              {total} products found
+            </p>
+
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {products.length === 0 ? (
+                <p className="col-span-full text-center py-10">
+                  No products found
+                </p>
+              ) : (
+                products.map((product) => (
+                  <Cards Product={product} key={product.id} />
+                ))
+              )}
+            </div>
+          </>
+        )}
 
         <p className="mb-6 text-sm text-zinc-500 dark:text-zinc-400">
-          {/* TODO 12: Бүтээгдэхүүний тоо харуулах */}0 products found
+          {/* TODO 12: Бүтээгдэхүүний тоо харуулах */}
+          {total} products found
         </p>
 
         {/* TODO 13: Доорх hardcode-г products.map() ашиглан солих */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {/* Card 1 */}
-          <Cards Product={products} />
-          {products.slice(1).map((product) => (
-            <Cards key={product.id} Product={product} />
-          ))}
-        </div>
 
         {/* Pagination */}
         <div className="mt-10 flex items-center justify-center gap-4">
