@@ -19,6 +19,7 @@ export default function ProductDetail() {
   const { id } = useParams();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [imageindex, setImageIndex] = useState<string>("");
 
   // TODO 5: State хувьсагчдыг зарлах (product, loading, error)
 
@@ -27,11 +28,15 @@ export default function ProductDetail() {
       .then((res) => res.json())
       .then((data) => {
         setProduct(data);
+        setImageIndex(data.images[0]);
         setLoading(false);
       });
   }, [id]);
   // TODO 7: Ачааллын төлөв (loading state)
 
+  const handleClickImage = (image: string) => {
+    setImageIndex(image);
+  };
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
       {/* Header */}
@@ -70,7 +75,7 @@ export default function ProductDetail() {
               <div>
                 <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
                   <img
-                    src={product.thumbnail}
+                    src={imageindex}
                     alt={product.title}
                     className="h-96 w-full object-cover"
                   />
@@ -81,6 +86,7 @@ export default function ProductDetail() {
                 <div className="mt-4 grid grid-cols-4 gap-3">
                   {product.images.map((image) => (
                     <button
+                      onClick={() => handleClickImage(image)}
                       key={image}
                       className="overflow-hidden rounded-xl border-2 border-zinc-900 dark:border-zinc-100"
                     >
@@ -117,7 +123,7 @@ export default function ProductDetail() {
                     {[1, 2, 3, 4, 5].map((star) => (
                       <svg
                         key={star}
-                        className={`h-5 w-5 ${star <= 5 ? "text-amber-400" : "text-zinc-200 dark:text-zinc-700"}`}
+                        className={`h-5 w-5 ${star <= product.rating ? "text-amber-400" : "text-zinc-200 dark:text-zinc-700"}`}
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -126,7 +132,7 @@ export default function ProductDetail() {
                     ))}
                   </div>
                   <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                    4.94
+                    {product.rating}
                   </span>
                 </div>
 
@@ -222,12 +228,28 @@ export default function ProductDetail() {
                 {/* Stock Status */}
                 {/* TODO 14: Үлдэгдлийн тоогоор өнгө өөрчлөх */}
                 {/* stock > 50: emerald, stock > 10: amber, stock <= 10: red */}
-                <div className="mt-6 flex items-center gap-2">
-                  <span className="h-2.5 w-2.5 rounded-full bg-red-500"></span>
-                  <span className="text-sm font-medium text-red-600 dark:text-red-400">
-                    {product.stock > 50}
-                  </span>
-                </div>
+                {product.stock > 50 ? (
+                  <div className="mt-6 flex items-center gap-2">
+                    <span className="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+                    <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
+                      {product.stock} ширхэг үлдсэн
+                    </span>
+                  </div>
+                ) : product.stock > 10 ? (
+                  <div className="mt-6 flex items-center gap-2">
+                    <span className="h-2.5 w-2.5 rounded-full bg-amber-500"></span>
+                    <span className="text-sm font-medium text-amber-600 dark:text-amber-400">
+                      {product.stock} ширхэг үлдсэн
+                    </span>
+                  </div>
+                ) : (
+                  <div className="mt-6 flex items-center gap-2">
+                    <span className="h-2.5 w-2.5 rounded-full bg-red-500"></span>
+                    <span className="text-sm font-medium text-red-600 dark:text-red-400">
+                      {product.stock} ширхэг үлдсэн
+                    </span>
+                  </div>
+                )}
 
                 {/* Reviews Section */}
                 {/* TODO 15: product.reviews массивыг map-аар гүйлгэх */}
@@ -250,11 +272,11 @@ export default function ProductDetail() {
                             {[1, 2, 3, 4, 5].map((star) => (
                               <svg
                                 key={star}
-                                className={`h-3.5 w-3.5 ${star <= 5 ? "text-amber-400" : "text-zinc-200 dark:text-zinc-700"}`}
+                                className={`h-3.5 w-3.5 ${star <= product.rating ? "text-amber-400" : "text-zinc-200 dark:text-zinc-700"}`}
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
                               >
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.8１h3.46１a１ １ ０ ００．９５１－．６９l１．０７－３．２９２z" />
                               </svg>
                             ))}
                           </div>
