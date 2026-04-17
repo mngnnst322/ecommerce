@@ -5,6 +5,7 @@
 // TODO 2: useRouter импортлох (next/navigation)
 
 import Link from "next/link";
+import { useState } from "react";
 
 // TODO 3: LoginResponse төрөл зарлах
 // API: https://dummyjson.com/auth/login
@@ -20,8 +21,27 @@ export default function LoginPage() {
   // password - нууц үг, эхлэх утга: ""
   // error    - алдааны мессеж, эхлэх утга: ""
   // loading  - ачааллын төлөв, эхлэх утга: false
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [user, setUser] = useState(null);
 
   // TODO 6: handleSubmit функц бичих
+  const handlesubmit = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    fetch("https://dummyjson.com/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ username, password }),
+      headers: {
+        "Content-Type": "application/json",
+        Accepts: "application/json",
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {});
+  };
+  console.log(user);
   // 1. e.preventDefault() дуудах
   // 2. error хоослох, loading true болгох
   // 3. fetch("https://dummyjson.com/auth/login") POST хүсэлт илгээх
@@ -59,7 +79,10 @@ export default function LoginPage() {
       <main className="mx-auto max-w-7xl px-6 py-10">
         <div className="mx-auto max-w-sm">
           {/* TODO 7: form-д onSubmit={handleSubmit} холбох */}
-          <form className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+          <form
+            className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
+            onSubmit={handlesubmit}
+          >
             <h2 className="mb-6 text-lg font-semibold text-zinc-900 dark:text-zinc-100">
               Нэвтрэх
             </h2>
@@ -76,6 +99,8 @@ export default function LoginPage() {
               </label>
               {/* TODO 9: value={username} onChange холбох */}
               <input
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 id="username"
                 type="text"
                 required
@@ -94,6 +119,8 @@ export default function LoginPage() {
               </label>
               {/* TODO 10: value={password} onChange холбох */}
               <input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 id="password"
                 type="password"
                 required
