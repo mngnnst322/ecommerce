@@ -48,12 +48,14 @@ export type ProductApiResponse = {
   skip: number;
   limit: number;
 };
-accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJlbWlseXMiLCJlbWFpbCI6ImVtaWx5LmpvaG5zb25AeC5kdW1teWpzb24uY29tIiwiZmlyc3ROYW1lIjoiRW1pbHkiLCJsYXN0TmFtZSI6IkpvaG5zb24iLCJnZW5kZXIiOiJmZW1hbGUiLCJpbWFnZSI6Imh0dHBzOi8vZHVtbXlqc29uLmNvbS9pY29uL2VtaWx5cy8xMjgiLCJpYXQiOjE3NzYzOTU5NDMsImV4cCI6MTc3NjM5OTU0M30.361N-IulD0QMg9O248KmWwF3cH6JMGyiwHep2E8ypzU";
-email: "emily.johnson@x.dummyjson.com";
-firstName: "Emily";
-gender: "female";
-id: 1;
-image: "https://dummyjson.com/icon/emilys/128";
-lastName: "Johnson";
-refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJlbWlseXMiLCJlbWFpbCI6ImVtaWx5LmpvaG5zb25AeC5kdW1teWpzb24uY29tIiwiZmlyc3ROYW1lIjoiRW1pbHkiLCJsYXN0TmFtZSI6IkpvaG5zb24iLCJnZW5kZXIiOiJmZW1hbGUiLCJpbWFnZSI6Imh0dHBzOi8vZHVtbXlqc29uLmNvbS9pY29uL2VtaWx5cy8xMjgiLCJpYXQiOjE3NzYzOTU5NDMsImV4cCI6MTc3ODk4Nzk0M30.q_5AUzQYbJC1myWTKWBTW6EcSTGRixuZv_wFyUHnNX8";
-username: "emilys";
+export type User = {
+  accessToken: string;
+  email: string;
+  firstName: string;
+  gender: string;
+  id: number;
+  image: string;
+  lastName: string;
+  refreshToken: string;
+  username: string;
+};

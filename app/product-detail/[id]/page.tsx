@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { Product } from "@/app/types";
@@ -66,7 +67,7 @@ export default function ProductDetail() {
         <div className="flex justify-center py-20">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-zinc-300 border-t-zinc-900 dark:border-zinc-700 dark:border-t-zinc-100"></div>
         </div>
-      ) : (
+      ) : product ? (
         <>
           <main className="mx-auto max-w-7xl px-6 py-10">
             {/* TODO 10: Доорх hardcode-г product state-ээр солих */}
@@ -76,7 +77,7 @@ export default function ProductDetail() {
                 <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
                   <img
                     src={imageindex}
-                    alt={product.title}
+                    alt={product?.title}
                     className="h-96 w-full object-cover"
                   />
                 </div>
@@ -84,7 +85,7 @@ export default function ProductDetail() {
                 {/* Thumbnail Gallery */}
                 {/* TODO 11: product.images массивыг map-аар гүйлгэх */}
                 <div className="mt-4 grid grid-cols-4 gap-3">
-                  {product.images.map((image) => (
+                  {product?.images.map((image) => (
                     <button
                       onClick={() => handleClickImage(image)}
                       key={image}
@@ -104,17 +105,17 @@ export default function ProductDetail() {
               <div>
                 {/* Category Badge */}
                 <span className="inline-block rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400">
-                  {product.category}
+                  {product?.category}
                 </span>
 
                 {/* Title */}
                 <h2 className="mt-3 text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-                  {product.title}
+                  {product?.title}
                 </h2>
 
                 {/* Brand */}
                 <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-                  by {product.brand}
+                  by {product?.brand}
                 </p>
 
                 {/* Rating */}
@@ -132,7 +133,7 @@ export default function ProductDetail() {
                     ))}
                   </div>
                   <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                    {product.rating}
+                    {product?.rating}
                   </span>
                 </div>
 
@@ -292,6 +293,10 @@ export default function ProductDetail() {
             </div>
           </main>
         </>
+      ) : (
+        <div className="flex justify-center py-20">
+          <p className="text-zinc-600 dark:text-zinc-400">Product not found</p>
+        </div>
       )}
       <footer className="mt-auto border-t border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
         <div className="mx-auto max-w-7xl px-6 py-4 text-center text-xs text-zinc-400">
